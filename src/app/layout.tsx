@@ -1,6 +1,12 @@
-import './globals.css'
 import type { Metadata } from 'next'
+import { PrimeReactProvider } from "primereact/api";
+import "primereact/resources/themes/vela-orange/theme.css";
+import 'primeicons/primeicons.css';
+
+import { Navbar } from '@/components'
 import { Inter } from 'next/font/google'
+
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +22,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <PrimeReactProvider value={{ unstyled: true, pt: {} }}>
+          <Navbar />
+          <div className='py-4'>{children}</div>
+        </PrimeReactProvider>
+      </body>
     </html>
   )
 }
