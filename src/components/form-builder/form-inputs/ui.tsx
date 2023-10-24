@@ -1,14 +1,17 @@
 'use client';
 
-import { useRef, ReactNode } from "react";
+import { useRef, ReactNode, Fragment, createElement } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
-import type { Identifier, XYCoord } from 'dnd-core'
 
 import { useDesigner } from '@/contexts';
-import { ItemTypes, TInputInstance } from "../types";
 
-const inputInctance = {
+import type { Identifier, XYCoord } from 'dnd-core'
+import type { InputInstance } from "./types";
+import { ETInput, ItemTypes, TInputInstance, TInputsFields } from "../types";
+
+const inputInctance: InputInstance = {
     Container({ children, id, index }: { children: ReactNode; id: string, index: number }) {
         const ref = useRef<HTMLDivElement>(null)
         const { shuffleInputs } = useDesigner();
@@ -89,19 +92,42 @@ const inputInctance = {
             </div>
         )
     },
-    FormInputs({ id, index, type = "text", label = "label", placeholder = "placeholder", required = true, fieldName = "", }: TInputInstance) {
+    FormInputs(props: TInputsFields) {
         const { activeInputID, toggleActiveInputID } = useDesigner();
         return (
-            <inputInctance.Container id={id} index={index || 0}>
-                <div className={`p-4 relative border-2 ${id === activeInputID ? 'border-slate-400' : 'border-none'} rounded-lg bg-slate-800`} onClick={() => toggleActiveInputID(id)}>
-                    <p className="text-sm mb-2">{label}{required && "*"}</p>
-                    <InputText className="px-2 w-full select-none pointer-events-none" type={type} title={label} placeholder={placeholder} required={required} />
+            <inputInctance.Container id={props.id} index={props.index || 0}>
+                <div className={`p-4 relative border-2 ${props.id === activeInputID ? 'border-slate-400' : 'border-none'} rounded-lg bg-slate-800`} onClick={() => toggleActiveInputID(props.id)}>
+                    {inputInctance.Components[props.componentsRender] &&
+                        createElement(inputInctance.Components[props.componentsRender], props)}
                     <div className="absolute top-2 right-2 select-none pointer-events-none">
-                        <p className="text-sm text-gray-500">{fieldName}</p>
+                        <p className="text-sm text-gray-500">{props.fieldName}</p>
                     </div>
                 </div>
             </inputInctance.Container>
         )
+    },
+    Components: {
+        [ETInput.default]: ({ type, label, required, placeholder }) =>
+            <Fragment>
+                <p className="text-sm mb-2">{label}{required && "*"}</p>
+                <InputText
+                    type={type}
+                    className="px-2 w-full select-none pointer-events-none"
+                    title={label}
+                    placeholder={placeholder}
+                    required={required}
+                />
+            </Fragment>,
+        [ETInput.checkbox]: ({ label, checked, required }) => {
+            return (
+                <Fragment>
+                    <p className="text-sm mb-2">{required && "*"}</p>
+                    <Checkbox checked={checked || false} />
+                    <label className="ml-2">{label}</label>
+                </Fragment>
+            )
+        },
+
     }
 }
 

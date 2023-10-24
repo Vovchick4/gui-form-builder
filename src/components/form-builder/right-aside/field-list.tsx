@@ -3,7 +3,7 @@
 import { useDrag } from "react-dnd";
 
 import { useDesigner } from "@/contexts";
-import { Field, ItemTypes, TInputInstance } from "../types";
+import { Field, ItemTypes, TInputInstance, TInputsFields } from "../types";
 
 export default function FieldList({ Icon, ...rest }: Field) {
     const { addInput } = useDesigner();
@@ -12,7 +12,7 @@ export default function FieldList({ Icon, ...rest }: Field) {
         type: ItemTypes.BOX,
         item: { name: rest.label },
         end: (item, monitor) => {
-            const dropResult = monitor.getDropResult<TInputInstance>()
+            const dropResult = monitor.getDropResult<TInputsFields>()
             if (item && dropResult) {
                 addInput(rest);
                 alert(`You dropped ${item.name} into Form builder!`)

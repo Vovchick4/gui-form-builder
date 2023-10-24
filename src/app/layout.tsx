@@ -7,6 +7,7 @@ import { Navbar } from '@/components'
 import { Inter } from 'next/font/google'
 
 import './globals.css'
+import MyDesignSystem from '@/components/prime-react-design';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <PrimeReactProvider value={{ unstyled: true, pt: {} }}>
+        <PrimeReactProvider value={{ unstyled: true, pt: MyDesignSystem }}>
           <Navbar />
           <div className='py-4'>{children}</div>
         </PrimeReactProvider>

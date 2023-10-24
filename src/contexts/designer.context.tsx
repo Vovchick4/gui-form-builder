@@ -5,7 +5,8 @@ import update from "immutability-helper";
 import { ChangeEvent, ReactNode, createContext, useContext, useState } from "react";
 
 import { TDesignerContext } from "./types";
-import { Field, TInputInstance } from "@/components/form-builder/types";
+import { IComponets } from '@/components/form-builder/form-inputs/types';
+import { ETInput, Field, TInputsFields } from "@/components/form-builder/types";
 
 export const DesignerContext = createContext<TDesignerContext>({} as TDesignerContext);
 
@@ -13,23 +14,43 @@ export function useDesigner() {
     return useContext(DesignerContext);
 }
 
+function generateDataForInput(data: Omit<Field, "Icon">): Omit<TInputsFields, "id" | "required"> {
+    const addedData: IComponets<object> = {
+        [ETInput.checkbox]: { checked: false },
+        [ETInput.default]: { placeholder: "" },
+    }
+
+    if (!addedData[data.componentsRender]) {
+        throw new Error("Added data for input type not found");
+    }
+
+    return { ...data, ...addedData[data.componentsRender] }
+}
+
 export const DesignerProvider = ({ children }: { children: ReactNode }) => {
-    const [inputs, setInputs] = useState<TInputInstance[]>([])
+    const [inputs, setInputs] = useState<TInputsFields[]>([])
     const [activeInputID, setActiveInputID] = useState<string | null>(null);
 
     function addInput(data: Omit<Field, "Icon">) {
-        setInputs(prev => ([...prev, { id: uuidv4(), label: data.label, type: data.type, placeholder: "", fieldName: data.fieldName, required: false }]))
+        setInputs(prev => ([...prev, { ...generateDataForInput(data), required: false, id: uuidv4() }]))
     }
 
     function toggleActiveInputID(id: string) {
         setActiveInputID(prev => prev === id ? null : id);
     }
 
-    function updateInputByID(id: string, event: ChangeEvent<HTMLInputElement> | boolean) {
+    function updateInputByID(id: string, event: ChangeEvent<HTMLInputElement> | boolean, nameKey?: string) {
         if (typeof event === "boolean") {
             setInputs(prev => prev.map(input => input.id === id ? { ...input, ["required"]: event } : input))
         } else {
             setInputs(prev => prev.map(input => input.id === id ? { ...input, [event.target.name]: event.target.value } : input))
+        }
+    }
+
+    function removeInputById(id: string) {
+        if (id) {
+            setActiveInputID(null);
+            setInputs(prev => prev.filter((input) => input.id !== id))
         }
     }
 
@@ -42,5 +63,5 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
         }))
     }
 
-    return <DesignerContext.Provider value={{ inputs, activeInputID, toggleActiveInputID, updateInputByID, shuffleInputs, addInput }}>{children}</DesignerContext.Provider>
+    return <DesignerContext.Provider value={{ inputs, activeInputID, toggleActiveInputID, updateInputByID, removeInputById, shuffleInputs, addInput }}>{children}</DesignerContext.Provider>
 }

@@ -3,12 +3,12 @@ import { useDesigner } from "@/contexts";
 import FieldList from "./field-list";
 import { listInpts } from "./list-of-fields";
 import EditFormInputs from "./edit-form-inputs";
-import { TInputInstance } from "../types";
+import { TInputInstance, TInputsFields } from "../types";
 
 export default function RightAside() {
     const { inputs, activeInputID } = useDesigner();
-    const input: TInputInstance = useMemo(() => {
-        return inputs.find(input => input.id === activeInputID) as TInputInstance
+    const input: TInputsFields = useMemo(() => {
+        return inputs.find(input => input.id === activeInputID) as TInputsFields
     }, [inputs, activeInputID])
 
     return (

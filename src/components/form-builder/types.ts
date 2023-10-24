@@ -4,13 +4,28 @@ export type TInputInstance = {
     id: string;
     type: string;
     label: string;
-    placeholder: string;
     required: boolean;
     fieldName: string;
     index?: number;
+    componentsRender: ETInput
 }
 
-export type Field = { type: string, label: string, Icon: Icon, fieldName: string }
+export type TInputsFields = TInputInstance & TTextField & TCheckBox
+
+export type TTextField = {
+    placeholder?: string;
+}
+
+export type TCheckBox = {
+    checked?: boolean;
+}
+
+export enum ETInput {
+    default = "default",
+    checkbox = "checkbox",
+}
+
+export type Field = { Icon: Icon } & Omit<TInputInstance, "id" | "index" | "required" | "placeholder">
 
 export const ItemTypes = {
     BOX: 'box',

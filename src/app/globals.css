@@ -8,3 +8,10 @@
   @tailwind components;
   @tailwind utilities;
 }
+
+@layer base {
+  button {
+    color: revert-layer;
+    background-color: revert-layer;
+  }
+}
