@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + " bg-black"}>
         <PrimeReactProvider value={{ unstyled: true, pt: MyDesignSystem }}>
           <Navbar />
           <div className='py-4'>{children}</div>

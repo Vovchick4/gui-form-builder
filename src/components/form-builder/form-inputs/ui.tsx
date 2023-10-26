@@ -2,6 +2,7 @@
 
 import { useRef, ReactNode, Fragment, createElement } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { Editor } from "primereact/editor";
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
 
@@ -9,7 +10,7 @@ import { useDesigner } from '@/contexts';
 
 import type { Identifier, XYCoord } from 'dnd-core'
 import type { InputInstance } from "./types";
-import { ETInput, ItemTypes, TInputInstance, TInputsFields } from "../types";
+import { ETInput, ItemTypes, TInputsFields } from "../types";
 
 const inputInctance: InputInstance = {
     Container({ children, id, index }: { children: ReactNode; id: string, index: number }) {
@@ -109,25 +110,34 @@ const inputInctance: InputInstance = {
     Components: {
         [ETInput.default]: ({ type, label, required, placeholder }) =>
             <Fragment>
-                <p className="text-sm mb-2">{label}{required && "*"}</p>
+                <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
                 <InputText
                     type={type}
                     className="px-2 w-full select-none pointer-events-none"
                     title={label}
                     placeholder={placeholder}
                     required={required}
+                    value=""
+                    autoComplete="off"
                 />
             </Fragment>,
         [ETInput.checkbox]: ({ label, checked, required }) => {
             return (
                 <Fragment>
-                    <p className="text-sm mb-2">{required && "*"}</p>
-                    <Checkbox checked={checked || false} />
-                    <label className="ml-2">{label}</label>
+                    <p className="text-white text-sm mb-2">{required && "*"}</p>
+                    <Checkbox size={4} checked={checked || false} />
+                    <label className="text-white ml-2 text-sm">{label}</label>
                 </Fragment>
             )
         },
-
+        [ETInput.markdown]: ({label, required, placeholder}) => {
+            return (
+                <Fragment>
+                    <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
+                    <Editor className="select-none pointer-events-none" placeholder={placeholder} />
+                </Fragment>
+            )
+        }
     }
 }
 

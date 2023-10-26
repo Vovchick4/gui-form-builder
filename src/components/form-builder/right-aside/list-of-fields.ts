@@ -1,4 +1,4 @@
-import { Type, Eye, ToggleRight } from "react-feather";
+import { Type, Eye, AlignCenter, ToggleRight } from "react-feather";
 import { ETInput, TListOfFileds } from "../types";
 
 export const listInpts: TListOfFileds = [{
@@ -8,22 +8,35 @@ export const listInpts: TListOfFileds = [{
             Icon: Type,
             componentsRender: ETInput.default,
             type: "text",
-            label: "Text field",
+            label: "Text",
             fieldName: "Text field",
         },
         {
             Icon: Eye,
             componentsRender: ETInput.default,
             type: "password",
-            label: "Password field",
+            label: "Password",
             fieldName: "Password field",
         },
         {
             Icon: ToggleRight,
             componentsRender: ETInput.checkbox,
             type: "checkbox",
-            label: "Checkbox field",
+            label: "Checkbox",
             fieldName: "Checkbox field",
         }
     ]
-}]
+},
+ {
+    category: "Modern fields",
+    fields: [
+        {
+            Icon: AlignCenter,
+            componentsRender: ETInput.markdown,
+            type: "",
+            label: "Text editor",
+            fieldName: "Text editor field"
+        }
+    ]
+ }
+]

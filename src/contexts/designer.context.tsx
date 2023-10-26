@@ -18,6 +18,7 @@ function generateDataForInput(data: Omit<Field, "Icon">): Omit<TInputsFields, "i
     const addedData: IComponets<object> = {
         [ETInput.checkbox]: { checked: false },
         [ETInput.default]: { placeholder: "" },
+        [ETInput.markdown]: { },
     }
 
     if (!addedData[data.componentsRender]) {
@@ -40,9 +41,10 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
     }
 
     function updateInputByID(id: string, event: ChangeEvent<HTMLInputElement> | boolean, nameKey?: string) {
-        if (typeof event === "boolean") {
-            setInputs(prev => prev.map(input => input.id === id ? { ...input, ["required"]: event } : input))
+        if (nameKey) {
+            setInputs(prev => prev.map(input => input.id === id ? { ...input, [nameKey]: event } : input))
         } else {
+            if(typeof event === "boolean") return;
             setInputs(prev => prev.map(input => input.id === id ? { ...input, [event.target.name]: event.target.value } : input))
         }
     }

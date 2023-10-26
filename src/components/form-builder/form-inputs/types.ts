@@ -12,4 +12,5 @@ export interface IComponets<M> {
     [key: string]: M;
     default: M;
     checkbox: M;
+    markdown: M;
 }

@@ -13,15 +13,22 @@ const editInputs: IComponets<React.FC<Omit<TInputsFields & Pick<TDesignerContext
         return (
             <Fragment>
                 <p className="mb-2 text-sm">Placeholder:</p>
-                <InputText className="p-2 w-full" name="placeholder" value={placeholder} onChange={(event) => updateInputByID(id, event)} />
+                <InputText autoComplete="off" className="p-2 w-full" name="placeholder" value={placeholder} onChange={(event) => updateInputByID(id, event)} />
             </Fragment>
         )
     },
     [ETInput.checkbox]: ({ id, checked, updateInputByID }) => {
         return (
             <Fragment>
-                <p className="mb-2 text-sm">Required:</p>
+                <p className="mb-2 text-sm">Checked:</p>
                 <InputSwitch checked={checked || false} onChange={(event) => updateInputByID(id, event.value, "checked")} />
+            </Fragment>
+        )
+    },
+    [ETInput.markdown]: ({ id, updateInputByID }) => {
+        return (
+            <Fragment>
+                
             </Fragment>
         )
     },
@@ -32,17 +39,17 @@ export default function EditFormInputs({ id, label, placeholder, required, compo
 
     return (
         <Fragment>
-            <form className="flex flex-col gap-4">
+            <form className="flex flex-col text-white gap-4" autoComplete="off">
                 <div>
                     <p className="mb-2 text-sm">Label:</p>
-                    <InputText className="p-2 w-full" name="label" value={label} onChange={(event) => updateInputByID(id, event)} />
+                    <InputText autoComplete="off" className="p-2 w-full" name="label" value={label} onChange={(event) => updateInputByID(id, event)} />
                 </div>
                 <div>
                     {createElement(editInputs[componentsRender], { id, label, placeholder, required, updateInputByID, ...rest })}
                 </div>
                 <div>
                     <p className="mb-2 text-sm">Required:</p>
-                    <InputSwitch checked={required} onChange={(event) => updateInputByID(id, event.value)} />
+                    <InputSwitch checked={required} onChange={(event) => updateInputByID(id, event.value, "required")} />
                 </div>
             </form>
             <div className="mt-3">

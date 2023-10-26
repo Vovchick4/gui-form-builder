@@ -1,0 +1,24 @@
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Form {
+    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+    type            String
+    componentRender EType
+    label           String
+    required        Boolean
+    checked         Boolean?
+    placeholder     String?
+}
+
+enum EType {
+    default
+    checkbox
+    markdown
+}

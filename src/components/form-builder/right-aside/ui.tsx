@@ -18,7 +18,7 @@ export default function RightAside() {
             ) : (
                 <ul className="flex flex-col gap-4">
                     {listInpts.map(({ category, fields }, i) => (
-                        <li key={i}>
+                        <li className="text-white" key={i}>
                             <p className="text-gray-500 text-sm mb-2">{category}</p>
                             <ul className="grid grid-cols-3 gap-4">
                                 {fields.map((field) => <FieldList key={field.label} {...field} />)}

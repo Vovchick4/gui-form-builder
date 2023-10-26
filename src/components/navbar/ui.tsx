@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Navbar() {
     return (
-        <div className="px-4 py-3 w-full bg-slate-900">
+        <div className="px-4 py-3 w-full text-white bg-slate-900">
             <div className="mx-auto flex items-center justify-between max-w-7xl w-full">
                 <div>
                     BuilderFormUI
