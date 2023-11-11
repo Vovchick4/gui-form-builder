@@ -8,13 +8,12 @@ generator client {
 }
 
 model Form {
-    id              String   @id @default(auto()) @map("_id") @db.ObjectId
-    type            String
-    componentRender EType
-    label           String
-    required        Boolean
-    checked         Boolean?
-    placeholder     String?
+    id        String @id @default(auto()) @map("_id") @db.ObjectId
+    title     String
+    author    String
+    email     String
+    formData  Json
+    requested Json
 }
 
 enum EType {

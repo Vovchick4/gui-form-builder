@@ -26,6 +26,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18",
     "react-feather": "^2.0.10",
+    "swr": "^2.2.4",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

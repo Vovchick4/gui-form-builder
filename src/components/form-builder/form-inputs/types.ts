@@ -5,7 +5,7 @@ import { TInputsFields } from "../types";
 export interface InputInstance {
     Container: React.FC<{ children: ReactNode; id: string; index: number }>;
     FormInputs: React.FC<TInputsFields>;
-    Components: IComponets<React.FC<TInputsFields>>;
+    Components: IComponets<React.FC<TInputsFields & {editable?: boolean}>>;
 }
 
 export interface IComponets<M> {

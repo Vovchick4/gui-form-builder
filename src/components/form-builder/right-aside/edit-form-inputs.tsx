@@ -7,6 +7,7 @@ import { useDesigner } from "@/contexts";
 import { IComponets } from "../form-inputs/types";
 import { ETInput, TInputsFields } from "../types";
 import type { TDesignerContext } from "@/contexts/types";
+import SlugInput from "@/components/text-field-sluggbale/ui";
 
 const editInputs: IComponets<React.FC<Omit<TInputsFields & Pick<TDesignerContext, "updateInputByID">, "componentsRender">>> = {
     [ETInput.default]: ({ id, placeholder, updateInputByID }) => {
@@ -28,24 +29,28 @@ const editInputs: IComponets<React.FC<Omit<TInputsFields & Pick<TDesignerContext
     [ETInput.markdown]: ({ id, updateInputByID }) => {
         return (
             <Fragment>
-                
+
             </Fragment>
         )
     },
 }
 
-export default function EditFormInputs({ id, label, placeholder, required, componentsRender, ...rest }: TInputsFields) {
+export default function EditFormInputs({ id, name, label, placeholder, required, componentsRender, ...rest }: TInputsFields) {
     const { updateInputByID, removeInputById } = useDesigner();
 
     return (
         <Fragment>
             <form className="flex flex-col text-white gap-4" autoComplete="off">
                 <div>
+                    <p className="mb-2 text-sm">Name:</p>
+                    <SlugInput name="name" value={name} onChange={(e) => updateInputByID(id, e)} />
+                </div>
+                <div>
                     <p className="mb-2 text-sm">Label:</p>
                     <InputText autoComplete="off" className="p-2 w-full" name="label" value={label} onChange={(event) => updateInputByID(id, event)} />
                 </div>
                 <div>
-                    {createElement(editInputs[componentsRender], { id, label, placeholder, required, updateInputByID, ...rest })}
+                    {createElement(editInputs[componentsRender], { id, name, label, placeholder, required, updateInputByID, ...rest })}
                 </div>
                 <div>
                     <p className="mb-2 text-sm">Required:</p>

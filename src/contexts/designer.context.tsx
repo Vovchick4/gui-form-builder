@@ -5,8 +5,9 @@ import update from "immutability-helper";
 import { ChangeEvent, ReactNode, createContext, useContext, useState } from "react";
 
 import { TDesignerContext } from "./types";
+import { ColumnEvent } from 'primereact/column';
 import { IComponets } from '@/components/form-builder/form-inputs/types';
-import { ETInput, Field, TInputsFields } from "@/components/form-builder/types";
+import { ETInput, Field, TCol, TFormDataBase, TInputsFields } from "@/components/form-builder/types";
 
 export const DesignerContext = createContext<TDesignerContext>({} as TDesignerContext);
 
@@ -14,11 +15,11 @@ export function useDesigner() {
     return useContext(DesignerContext);
 }
 
-function generateDataForInput(data: Omit<Field, "Icon">): Omit<TInputsFields, "id" | "required"> {
+function generateDataForInput(data: Omit<Field, "Icon">): Omit<TInputsFields, "id"> {
     const addedData: IComponets<object> = {
-        [ETInput.checkbox]: { checked: false },
-        [ETInput.default]: { placeholder: "" },
-        [ETInput.markdown]: { },
+        [ETInput.checkbox]: { checked: data.checked || false },
+        [ETInput.default]: { placeholder: data.placeholder || "" },
+        [ETInput.markdown]: {},
     }
 
     if (!addedData[data.componentsRender]) {
@@ -29,11 +30,35 @@ function generateDataForInput(data: Omit<Field, "Icon">): Omit<TInputsFields, "i
 }
 
 export const DesignerProvider = ({ children }: { children: ReactNode }) => {
+    const [requested, setRequested] = useState<TCol[]>([])
     const [inputs, setInputs] = useState<TInputsFields[]>([])
     const [activeInputID, setActiveInputID] = useState<string | null>(null);
+    const [formDataBase, setFormDataBase] = useState<Omit<TFormDataBase, "formData" | "requested"> | null>(null)
+
+    function onAddRequest(data: TCol) {
+        setRequested(prev => [...prev, data])
+    }
+
+    function onChangeRequsted(data: TCol[]) {
+        setRequested(data);
+        // if (key && value) {
+        //     setRequested(prev => prev.map((pr) => (pr[key] === e[key] ? { ...pr, [key]: value } : pr)))
+        // } else {
+        //     setRequested(prev => prev.map((pr) => (pr[e.field] === e.rowData[e.field] ? { ...pr, [e.field]: e.newValue } : pr)))
+        // }
+    }
 
     function addInput(data: Omit<Field, "Icon">) {
-        setInputs(prev => ([...prev, { ...generateDataForInput(data), required: false, id: uuidv4() }]))
+        setInputs(prev => ([...prev, { ...generateDataForInput(data), id: uuidv4() }]))
+    }
+
+    function fillFormDataBase(data: Omit<TFormDataBase, "formData" | "requested">) {
+        setFormDataBase(data);
+    }
+
+    function clearInputs() {
+        setInputs([]);
+        setFormDataBase(null);
     }
 
     function toggleActiveInputID(id: string) {
@@ -44,7 +69,7 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
         if (nameKey) {
             setInputs(prev => prev.map(input => input.id === id ? { ...input, [nameKey]: event } : input))
         } else {
-            if(typeof event === "boolean") return;
+            if (typeof event === "boolean") return;
             setInputs(prev => prev.map(input => input.id === id ? { ...input, [event.target.name]: event.target.value } : input))
         }
     }
@@ -65,5 +90,20 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
         }))
     }
 
-    return <DesignerContext.Provider value={{ inputs, activeInputID, toggleActiveInputID, updateInputByID, removeInputById, shuffleInputs, addInput }}>{children}</DesignerContext.Provider>
+    return <DesignerContext.Provider
+        value={{
+            inputs,
+            activeInputID,
+            formDataBase,
+            requested,
+            onAddRequest,
+            onChangeRequsted,
+            fillFormDataBase,
+            toggleActiveInputID,
+            updateInputByID,
+            removeInputById,
+            shuffleInputs,
+            addInput,
+            clearInputs
+        }}>{children}</DesignerContext.Provider>
 }

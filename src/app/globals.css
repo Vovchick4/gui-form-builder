@@ -1,4 +1,4 @@
-@layer tailwind-base, primereact, tailwind-utilities;
+@layer tailwind-base, tailwind-utilities;
 
 @layer tailwind-base {
   @tailwind base;
@@ -14,4 +14,8 @@
     color: revert-layer;
     background-color: revert-layer;
   }
+}
+
+.layo {
+  grid-template-areas: "text text";
 }

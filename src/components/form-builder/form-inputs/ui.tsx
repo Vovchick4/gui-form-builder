@@ -108,19 +108,21 @@ const inputInctance: InputInstance = {
         )
     },
     Components: {
-        [ETInput.default]: ({ type, label, required, placeholder }) =>
-            <Fragment>
+        [ETInput.default]: ({ name, value, type, label, required, placeholder, editable = false }) => {
+            return (<Fragment>
                 <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
                 <InputText
+                    name={name}
                     type={type}
-                    className="px-2 w-full select-none pointer-events-none"
+                    className={`px-2 w-full ${editable ? '' : 'select-none pointer-events-none'}`}
                     title={label}
                     placeholder={placeholder}
                     required={required}
-                    value=""
+                    value={editable ? value : ""}
                     autoComplete="off"
                 />
-            </Fragment>,
+            </Fragment>)
+        },
         [ETInput.checkbox]: ({ label, checked, required }) => {
             return (
                 <Fragment>
@@ -130,11 +132,11 @@ const inputInctance: InputInstance = {
                 </Fragment>
             )
         },
-        [ETInput.markdown]: ({label, required, placeholder}) => {
+        [ETInput.markdown]: ({ name, value, label, required, placeholder, editable = false }) => {
             return (
                 <Fragment>
                     <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
-                    <Editor className="select-none pointer-events-none" placeholder={placeholder} />
+                    <Editor name={name} value={editable ? value : ""} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
                 </Fragment>
             )
         }
