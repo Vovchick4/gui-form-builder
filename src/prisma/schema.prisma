@@ -8,12 +8,13 @@ generator client {
 }
 
 model Form {
-    id        String @id @default(auto()) @map("_id") @db.ObjectId
-    title     String
-    author    String
-    email     String
-    formData  Json
-    requested Json
+    id            String @id @default(auto()) @map("_id") @db.ObjectId
+    title         String
+    author        String
+    email         String
+    formData      Json
+    requested     Json
+    table_columns Json
 }
 
 enum EType {
