@@ -57,6 +57,7 @@ export default function RelationTable() {
                 tableStyle={{ position: "relative", minWidth: '50rem', zIndex: 999 }}
                 onRowEditComplete={onRowEditComplete}
             >
+                <Column selectionMode="multiple" exportable={false}></Column>
                 {columns.map(({ field, header, body }) => {
                     return <Column
                         style={{ width: '25%' }}

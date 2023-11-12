@@ -50,10 +50,11 @@ export enum ETInput {
 }
 
 export type Field = { Icon: Icon } & Omit<TInputsFields, "id" | "index">
+export type ListOfField = { Icon: Icon } & Omit<TInputInstance, "id" | "index"  | "placeholder">
 
 export const ItemTypes = {
     BOX: 'box',
     CARD: 'card'
 }
 
-export type TListOfFileds = { category: string; fields: Field[]; }[]
+export type TListOfFileds = { category: string; fields: ListOfField[]; }[]

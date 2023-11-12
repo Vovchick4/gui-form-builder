@@ -6,6 +6,9 @@ export const listInpts: TListOfFileds = [{
     fields: [
         {
             Icon: Type,
+            name: "",
+            value: "",
+            required: false,
             componentsRender: ETInput.default,
             type: "text",
             label: "Text",
@@ -13,6 +16,9 @@ export const listInpts: TListOfFileds = [{
         },
         {
             Icon: Eye,
+            name: "",
+            value: "",
+            required: false,
             componentsRender: ETInput.default,
             type: "password",
             label: "Password",
@@ -20,6 +26,9 @@ export const listInpts: TListOfFileds = [{
         },
         {
             Icon: ToggleRight,
+            name: "",
+            value: "",
+            required: false,
             componentsRender: ETInput.checkbox,
             type: "checkbox",
             label: "Checkbox",
@@ -32,6 +41,9 @@ export const listInpts: TListOfFileds = [{
     fields: [
         {
             Icon: AlignCenter,
+            name: "",
+            value: "",
+            required: false,
             componentsRender: ETInput.markdown,
             type: "",
             label: "Text editor",
