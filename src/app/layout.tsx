@@ -1,3 +1,5 @@
+import './globals.css'
+
 import type { Metadata } from 'next'
 import { PrimeReactProvider } from "primereact/api";
 import "primereact/resources/themes/vela-orange/theme.css";
@@ -6,7 +8,6 @@ import 'primeicons/primeicons.css';
 import { Navbar } from '@/components'
 import { Inter } from 'next/font/google'
 
-import './globals.css'
 import MyDesignSystem from '@/components/prime-react-design';
 
 const inter = Inter({ subsets: ['latin'] })
