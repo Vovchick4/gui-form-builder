@@ -12,6 +12,7 @@ import { useDesigner } from "@/contexts";
 import { getFormById } from "@/app/online/[formId]/actions";
 import { TFormDataBase, rightAsideMode } from "@/components/form-builder/types";
 
+const keys = ["formData", "requested", "table_columns"];
 export default function EditFormId() {
     const { formId } = useParams();
     const { addInput, fillFormDataBase, clearInputs } = useDesigner();
@@ -22,12 +23,12 @@ export default function EditFormId() {
 
         let fillDate: Omit<TFormDataBase, "formData" | "requested"> = {};
         Object.entries(data).forEach(([key, value]) => {
-            if (key !== "formData" && key !== "requested") {
+            if (!keys.includes(key)) {
                 fillDate[key] = value;
             }
         });
-        if (fillDate) {
-            fillFormDataBase(fillDate);
+        if (fillDate && data.table_columns) {
+            fillFormDataBase(fillDate, data.table_columns);
         }
 
         const inputsParseds = JSON.parse(data.formData);

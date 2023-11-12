@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, { params: { formId } }: { params: { formId: string } }) {
     try {
-        const forms = await prisma.form.findFirst({ where: { id: formId } });
-        if (!forms) {
+        const form = await prisma.form.findFirst({ where: { id: formId } });
+        if (!form) {
             return NextResponse.json({ data: [], message: "Data not found!" });
         }
-        return NextResponse.json({ data: forms, message: "OK" });
+        return NextResponse.json({ data: form, message: "OK" });
     } catch (error) {
         console.log(error);
 

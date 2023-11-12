@@ -26,6 +26,7 @@ const swrOptions = {
 
 export default function DialogForm({ mode = rightAsideMode.create, inpts, onCloseDialog }: { mode?: rightAsideMode, inpts: TInputsFields[], onCloseDialog: () => void }) {
     const { requested, formDataBase } = useDesigner();
+    console.log("🚀 ~ file: dialog-form.tsx:29 ~ DialogForm ~ requested:", requested)
     const editorToastRef: any = useRef(null);
     const { trigger, isMutating } = useSWRMutation<any, any, any, any>(swrOptions[mode].url + (formDataBase?.id ? formDataBase?.id : ''), swrOptions[mode].meth);
 
@@ -38,7 +39,7 @@ export default function DialogForm({ mode = rightAsideMode.create, inpts, onClos
         // Log the form data
         console.log('Form Data:', data);
         try {
-            await trigger({ ...data, requested: JSON.stringify([]), formData: JSON.stringify(inpts), table_columns: JSON.stringify(requested) })
+            await trigger({ ...data, requested: JSON.stringify([]), formData: JSON.stringify(inpts), table_columns: requested })
 
             editorToastRef.current?.show({ severity: "success", summary: swrOptions[mode].message, life: 4300 });
 

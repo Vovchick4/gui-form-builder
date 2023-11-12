@@ -8,7 +8,7 @@ export type TDesignerContext = {
     formDataBase: Omit<TFormDataBase, "formData" | "requested"> | null,
     requested: TCol[],
     onAddRequest: (data: TCol) => void,
-    fillFormDataBase: (data: Omit<TFormDataBase, "formData" | "requested">) => void,
+    fillFormDataBase: (data: Omit<TFormDataBase, "formData" | "requested">, parsed: any) => void,
     onChangeRequsted: (data: TCol[]) => void,
     onRemoveRequsted: (ids: string[]) => void,
     toggleActiveInputID: (id: string) => void,

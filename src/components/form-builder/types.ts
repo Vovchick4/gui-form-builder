@@ -13,6 +13,7 @@ export type TFormDataBase = {
     email: string
     formData: string
     requested: string
+    table_columns: string
 }
 
 export type TInputInstance = {

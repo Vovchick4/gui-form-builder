@@ -33,7 +33,7 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
     const [requested, setRequested] = useState<TCol[]>([])
     const [inputs, setInputs] = useState<TInputsFields[]>([])
     const [activeInputID, setActiveInputID] = useState<string | null>(null);
-    const [formDataBase, setFormDataBase] = useState<Omit<TFormDataBase, "formData" | "requested"> | null>(null)
+    const [formDataBase, setFormDataBase] = useState<Omit<TFormDataBase, "formData" | "requested" | "table_columns"> | null>(null)
 
     function onAddRequest(data: TCol) {
         setRequested(prev => [...prev, data])
@@ -51,7 +51,8 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
         setInputs(prev => ([...prev, { ...generateDataForInput(data), id: uuidv4() }]))
     }
 
-    function fillFormDataBase(data: Omit<TFormDataBase, "formData" | "requested">) {
+    function fillFormDataBase(data: Omit<TFormDataBase, "formData" | "requested">, parsed: any) {
+        setRequested(parsed);
         setFormDataBase(data);
     }
 
