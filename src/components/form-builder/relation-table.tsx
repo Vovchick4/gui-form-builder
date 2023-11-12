@@ -1,12 +1,13 @@
 'use client'
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useDesigner } from "@/contexts";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
 import { Column, ColumnEditorOptions } from "primereact/column";
+import { TCol } from "./types";
 
 const columns = [
     { field: 'column_name', header: 'Column name' },
@@ -22,6 +23,7 @@ const columns = [
 ];
 
 export default function RelationTable() {
+    const [selectionRow, setSelectionRow] = useState<TCol[] | null>(null);
     const { inputs, requested, onAddRequest, onChangeRequsted } = useDesigner();
     const items = useMemo(() => inputs.map(({ name }) => (name)), [inputs]);
 
@@ -47,14 +49,21 @@ export default function RelationTable() {
         onChangeRequsted(_products);
     };
 
+    const onSelectionChange = (e: any) => {
+        setSelectionRow(e.value);
+    }
+
     return (
         <div>
             <Button onClick={() => onAddRequest({ column_name: "edit field", relation_field: items[0] })}>Add a new field!</Button>
+            <Button severity="danger" disabled={!!selectionRow}>{selectionRow?.length !== 0 ? `Delete choosen items ${selectionRow?.length}` : 'Choose items'}</Button>
             <DataTable
                 editMode="row"
                 dataKey="id"
                 value={requested}
                 tableStyle={{ position: "relative", minWidth: '50rem', zIndex: 999 }}
+                selection={selectionRow}
+                onSelectionChange={onSelectionChange}
                 onRowEditComplete={onRowEditComplete}
             >
                 <Column selectionMode="multiple" exportable={false}></Column>
