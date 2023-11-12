@@ -41,11 +41,10 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
 
     function onChangeRequsted(data: TCol[]) {
         setRequested(data);
-        // if (key && value) {
-        //     setRequested(prev => prev.map((pr) => (pr[key] === e[key] ? { ...pr, [key]: value } : pr)))
-        // } else {
-        //     setRequested(prev => prev.map((pr) => (pr[e.field] === e.rowData[e.field] ? { ...pr, [e.field]: e.newValue } : pr)))
-        // }
+    }
+
+    function onRemoveRequsted(ids: string[]) {
+        setRequested(prev => prev.filter(pr => !ids.includes(pr.id)));
     }
 
     function addInput(data: Omit<Field, "Icon">) {
@@ -99,6 +98,7 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
             onAddRequest,
             onChangeRequsted,
             fillFormDataBase,
+            onRemoveRequsted,
             toggleActiveInputID,
             updateInputByID,
             removeInputById,

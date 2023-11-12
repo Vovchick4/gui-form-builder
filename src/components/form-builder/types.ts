@@ -6,12 +6,12 @@ export enum rightAsideMode {
 }
 
 export type TFormDataBase = {
-    [key: string] : string
-    id:        string
-    title:     string
-    author:    string
-    email:     string
-    formData:  string
+    [key: string]: string
+    id: string
+    title: string
+    author: string
+    email: string
+    formData: string
     requested: string
 }
 
@@ -28,7 +28,8 @@ export type TInputInstance = {
 }
 
 export type TCol = {
-    [key: string] : string
+    [key: string]: string
+    id: string
     column_name: string
     relation_field: string
 }
@@ -50,7 +51,7 @@ export enum ETInput {
 }
 
 export type Field = { Icon: Icon } & Omit<TInputsFields, "id" | "index">
-export type ListOfField = { Icon: Icon } & Omit<TInputInstance, "id" | "index"  | "placeholder">
+export type ListOfField = { Icon: Icon } & Omit<TInputInstance, "id" | "index" | "placeholder">
 
 export const ItemTypes = {
     BOX: 'box',

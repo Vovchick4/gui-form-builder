@@ -1,5 +1,6 @@
 'use client'
 
+import { v4 as uuid4 } from "uuid"
 import { useState, useMemo } from "react";
 import { useDesigner } from "@/contexts";
 import { Button } from "primereact/button";
@@ -23,8 +24,8 @@ const columns = [
 ];
 
 export default function RelationTable() {
-    const [selectionRow, setSelectionRow] = useState<TCol[] | null>(null);
-    const { inputs, requested, onAddRequest, onChangeRequsted } = useDesigner();
+    const [selectionRow, setSelectionRow] = useState<TCol[]>([]);
+    const { inputs, requested, onAddRequest, onChangeRequsted, onRemoveRequsted } = useDesigner();
     const items = useMemo(() => inputs.map(({ name }) => (name)), [inputs]);
 
     const cellEditor = (options: ColumnEditorOptions) => {
@@ -55,14 +56,23 @@ export default function RelationTable() {
 
     return (
         <div>
-            <Button onClick={() => onAddRequest({ column_name: "edit field", relation_field: items[0] })}>Add a new field!</Button>
-            <Button severity="danger" disabled={!!selectionRow}>{selectionRow?.length !== 0 ? `Delete choosen items ${selectionRow?.length}` : 'Choose items'}</Button>
+            <Button
+                onClick={() => onAddRequest({ id: uuid4(), column_name: "edit field", relation_field: items[0] })}>
+                Add a new field!
+            </Button>
+            <Button
+                severity="danger"
+                disabled={selectionRow.length === 0}
+                onClick={() => onRemoveRequsted(selectionRow.map(({ id }) => id))}>
+                {selectionRow?.length !== 0 ? `Delete choosen items ${selectionRow?.length}` : 'Choose items'}
+            </Button>
             <DataTable
                 editMode="row"
                 dataKey="id"
                 value={requested}
-                tableStyle={{ position: "relative", minWidth: '50rem', zIndex: 999 }}
+                selectionMode={"checkbox"}
                 selection={selectionRow}
+                tableStyle={{ position: "relative", minWidth: '50rem', zIndex: 999 }}
                 onSelectionChange={onSelectionChange}
                 onRowEditComplete={onRowEditComplete}
             >
