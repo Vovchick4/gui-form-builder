@@ -108,7 +108,7 @@ const inputInctance: InputInstance = {
         )
     },
     Components: {
-        [ETInput.default]: ({ name, value, type, label, required, placeholder, editable = false }) => {
+        [ETInput.default]: ({ name, value, type, label, required, placeholder, editable = false, onChange = (e) => { } }) => {
             return (<Fragment>
                 <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
                 <InputText
@@ -119,6 +119,7 @@ const inputInctance: InputInstance = {
                     placeholder={placeholder}
                     required={required}
                     value={editable ? value : ""}
+                    onChange={onChange}
                     autoComplete="off"
                 />
             </Fragment>)
@@ -132,11 +133,11 @@ const inputInctance: InputInstance = {
                 </Fragment>
             )
         },
-        [ETInput.markdown]: ({ name, value, label, required, placeholder, editable = false }) => {
+        [ETInput.markdown]: ({ name, value, label, required, placeholder, editable = false, onChange = (e) => { } }) => {
             return (
                 <Fragment>
                     <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
-                    <Editor name={name} value={editable ? value : ""} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
+                    <Editor name={name} value={editable ? value : ""} onChange={onChange} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
                 </Fragment>
             )
         }
