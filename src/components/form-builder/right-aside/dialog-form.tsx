@@ -13,7 +13,7 @@ import { useDesigner } from "@/contexts"
 
 const swrOptions = {
     [rightAsideMode['create']]: {
-        url: '/api/form',
+        url: '/api/form/',
         meth: createForm,
         message: 'Created!'
     },
@@ -26,7 +26,6 @@ const swrOptions = {
 
 export default function DialogForm({ mode = rightAsideMode.create, inpts, onCloseDialog }: { mode?: rightAsideMode, inpts: TInputsFields[], onCloseDialog: () => void }) {
     const { requested, formDataBase } = useDesigner();
-    console.log("🚀 ~ file: dialog-form.tsx:29 ~ DialogForm ~ requested:", requested)
     const editorToastRef: any = useRef(null);
     const { trigger, isMutating } = useSWRMutation<any, any, any, any>(swrOptions[mode].url + (formDataBase?.id ? formDataBase?.id : ''), swrOptions[mode].meth);
 

@@ -9,7 +9,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 
 import { FormBuilder, RightAside } from "@/components";
 import { useDesigner } from "@/contexts";
-import { getFormById } from "@/app/online/[formId]/actions";
+import { getFormById } from "@/app/online/form/[formId]/actions";
 import { TFormDataBase, rightAsideMode } from "@/components/form-builder/types";
 
 const keys = ["formData", "requested", "table_columns"];

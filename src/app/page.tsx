@@ -19,8 +19,11 @@ export default function HomePage() {
         <ul className="grid gap-8" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))" }}>
           {data && data.map(({ id, title, author }) => (
             <li key={id}>
-              <Card className="relative" title={title} subTitle={author} footer={<Button label="Go to form online" link onClick={() => router.push(`/online/${id}`)} />}>
-                <Button style={{ position: "absolute" }} className="top-2 right-2" icon="pi pi-file-edit" onClick={() => router.push(`/form-builder/${id}`)} />
+              <Card className="relative" title={title} subTitle={author} footer={<Button label="Go to form online" link onClick={() => router.push(`/online/form/${id}`)} />}>
+                <div className="flex gap-4 absolute top-2 right-2">
+                  <Button icon="pi pi-table" onClick={() => router.push(`/online/table/${id}`)} />
+                  <Button icon="pi pi-file-edit" onClick={() => router.push(`/form-builder/${id}`)} />
+                </div>
               </Card>
             </li>
           ))}

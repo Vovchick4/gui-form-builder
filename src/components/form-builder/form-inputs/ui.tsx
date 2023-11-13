@@ -133,11 +133,11 @@ const inputInctance: InputInstance = {
                 </Fragment>
             )
         },
-        [ETInput.markdown]: ({ name, value, label, required, placeholder, editable = false, onChange = (e) => { } }) => {
+        [ETInput.markdown]: ({ name, value, label, required, placeholder, editable = false, onChange = (e, key) => { } }) => {
             return (
                 <Fragment>
                     <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
-                    <Editor name={name} value={editable ? value : ""} onChange={onChange} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
+                    <Editor name={name} value={editable ? value : ""} onTextChange={(e) => onChange(e as any, name)} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
                 </Fragment>
             )
         }

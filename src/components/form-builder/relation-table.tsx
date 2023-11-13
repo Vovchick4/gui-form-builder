@@ -21,6 +21,9 @@ const columns = [
             )
         }
     },
+    {
+        field: 'field_type', header: 'Field type'
+    },
 ];
 
 export default function RelationTable() {
@@ -66,29 +69,31 @@ export default function RelationTable() {
                 onClick={() => onRemoveRequsted(selectionRow.map(({ id }) => id))}>
                 {selectionRow?.length !== 0 ? `Delete choosen items ${selectionRow?.length}` : 'Choose items'}
             </Button>
-            <DataTable
-                editMode="row"
-                dataKey="id"
-                value={requested}
-                selectionMode={"checkbox"}
-                selection={selectionRow}
-                tableStyle={{ position: "relative", minWidth: '50rem', zIndex: 999 }}
-                onSelectionChange={onSelectionChange}
-                onRowEditComplete={onRowEditComplete}
-            >
-                <Column selectionMode="multiple" exportable={false}></Column>
-                {columns.map(({ field, header, body }) => {
-                    return <Column
-                        style={{ width: '25%' }}
-                        key={field}
-                        field={field}
-                        header={header}
-                        body={body && body}
-                        editor={(options) => cellEditor(options)}
-                    />;
-                })}
-                <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
-            </DataTable>
+            {(
+                <DataTable
+                    editMode="row"
+                    dataKey="id"
+                    value={typeof requested === 'string' ? JSON.parse(requested) : requested}
+                    selectionMode={"checkbox"}
+                    selection={selectionRow}
+                    onSelectionChange={onSelectionChange}
+                    onRowEditComplete={onRowEditComplete}
+                    tableStyle={{ position: "relative", minWidth: '50rem', zIndex: 999 }}
+                >
+                    <Column style={{ width: '5%' }} selectionMode="multiple" exportable={false}></Column>
+                    {columns.map(({ field, header, body }) => {
+                        return <Column
+                            style={{ width: '25%' }}
+                            key={field}
+                            field={field}
+                            header={header}
+                            body={body && body}
+                            editor={(options) => cellEditor(options)}
+                        />;
+                    })}
+                    <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
+                </DataTable>
+            )}
         </div>
     )
 }
