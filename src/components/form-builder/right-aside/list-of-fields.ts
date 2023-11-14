@@ -1,6 +1,8 @@
 import { Type, Eye, AlignCenter, ToggleRight } from "react-feather";
 import { ETInput, TListOfFileds } from "../types";
 
+export const field_types = ["String", "Text", "Checkbox", "TextEditor"]
+
 export const listInpts: TListOfFileds = [{
     category: "Default fields",
     fields: [
@@ -36,7 +38,7 @@ export const listInpts: TListOfFileds = [{
         }
     ]
 },
- {
+{
     category: "Modern fields",
     fields: [
         {
@@ -50,5 +52,5 @@ export const listInpts: TListOfFileds = [{
             fieldName: "Text editor field"
         }
     ]
- }
+}
 ]

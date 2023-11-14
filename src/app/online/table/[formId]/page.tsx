@@ -2,7 +2,6 @@
 
 import useSWR from "swr"
 import { useMemo } from "react";
-import { v4 as uuid4 } from "uuid";
 import { useParams } from "next/navigation";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
@@ -10,6 +9,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 
 import genereteData from "./utils";
 import { getFormById } from "../../form/[formId]/actions";
+import { BodyTemplate } from "@/components";
 import { TFormDataBase } from "@/components/form-builder/types";
 
 export default function Table() {
@@ -28,17 +28,22 @@ export default function Table() {
     return (
         <div className="max-w-7xl mx-auto">
             <DataTable
-                dataKey="id"
+                dataKey="Id"
                 value={req}
+                showGridlines
+                stateStorage="session"
+                paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}
             >
-                <Column style={{ width: '5%' }} field="index" header="Id" />
-                {data.table_columns.map(({ column_name, relation_field }: any, i: number) => {
+                <Column style={{ width: '5%' }} field="Index" header="Id" sortable />
+                {data.table_columns.map(({ column_name, relation_field, field_type }: any, i: number) => {
                     return <Column
                         key={i}
+                        sortable
                         style={{ width: '25%' }}
                         field={relation_field}
                         header={column_name}
-                    />;
+                        body={(field_type && BodyTemplate[field_type]) && ((options) => BodyTemplate[field_type](options, relation_field, column_name))}
+                    />
                 })}
             </DataTable>
         </div>

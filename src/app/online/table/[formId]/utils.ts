@@ -23,5 +23,5 @@ export default function genereteData(data: any[]) {
         table.push(row);
     }
 
-    return table.map((tb, index) => ({ id: v4(), ...tb, index: index + 1 }))
+    return table.map((tb, index) => ({ Id: v4(), ...tb, Index: index + 1 }))
 }

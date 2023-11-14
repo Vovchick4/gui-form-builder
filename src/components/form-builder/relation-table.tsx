@@ -2,13 +2,15 @@
 
 import { v4 as uuid4 } from "uuid"
 import { useState, useMemo } from "react";
-import { useDesigner } from "@/contexts";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
 import { Column, ColumnEditorOptions } from "primereact/column";
 import { TCol } from "./types";
+import { useDesigner } from "@/contexts";
+import inputInctance from "./form-inputs/ui";
+import { field_types } from "./right-aside/list-of-fields";
 
 const columns = [
     { field: 'column_name', header: 'Column name' },
@@ -32,7 +34,7 @@ export default function RelationTable() {
     const items = useMemo(() => inputs.map(({ name }) => (name)), [inputs]);
 
     const cellEditor = (options: ColumnEditorOptions) => {
-        if (options.field === 'relation_field') return selectEditor(options);
+        if (options.field === 'relation_field' || options.field === 'field_type') return selectEditor(options);
         return textEditor(options);
     };
 
@@ -41,7 +43,18 @@ export default function RelationTable() {
     };
 
     const selectEditor = (options: ColumnEditorOptions) => {
-        return <Dropdown options={items} value={options.value} placeholder="select field" onChange={(e) => options?.editorCallback && options.editorCallback(e.value)} />
+        let data;
+        switch (options.field) {
+            case "field_type":
+                data = field_types
+                break;
+            case "relation_field":
+                data = items;
+                break;
+            default:
+                break;
+        }
+        return <Dropdown options={data} value={options.value} placeholder="select field" onChange={(e) => options?.editorCallback && options.editorCallback(e.value)} />
     }
 
     const onRowEditComplete = (e: any) => {
@@ -66,7 +79,10 @@ export default function RelationTable() {
             <Button
                 severity="danger"
                 disabled={selectionRow.length === 0}
-                onClick={() => onRemoveRequsted(selectionRow.map(({ id }) => id))}>
+                onClick={() => {
+                    setSelectionRow([]);
+                    onRemoveRequsted(selectionRow.map(({ id }) => id))
+                }}>
                 {selectionRow?.length !== 0 ? `Delete choosen items ${selectionRow?.length}` : 'Choose items'}
             </Button>
             {(
