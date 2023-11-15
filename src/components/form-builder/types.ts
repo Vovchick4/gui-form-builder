@@ -51,7 +51,7 @@ export enum ETInput {
     markdown = "markdown"
 }
 
-export type Field = { Icon: Icon } & Omit<TInputsFields, "id" | "index">
+export type Field = { Icon: Icon } & Omit<TInputsFields, "index">
 export type ListOfField = { Icon: Icon } & Omit<TInputInstance, "id" | "index" | "placeholder">
 
 export const ItemTypes = {

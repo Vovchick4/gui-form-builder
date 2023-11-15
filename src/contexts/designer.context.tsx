@@ -1,11 +1,9 @@
 'use client';
 
-import { v4 as uuidv4 } from 'uuid';
 import update from "immutability-helper";
 import { ChangeEvent, ReactNode, createContext, useContext, useState } from "react";
 
 import { TDesignerContext } from "./types";
-import { ColumnEvent } from 'primereact/column';
 import { IComponets } from '@/components/form-builder/form-inputs/types';
 import { ETInput, Field, TCol, TFormDataBase, TInputsFields } from "@/components/form-builder/types";
 
@@ -34,6 +32,11 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
     const [inputs, setInputs] = useState<TInputsFields[]>([])
     const [activeInputID, setActiveInputID] = useState<string | null>(null);
     const [formDataBase, setFormDataBase] = useState<Omit<TFormDataBase, "formData" | "requested" | "table_columns"> | null>(null)
+    const [currentTranslate, setCurrentTranslate] = useState<number>(0)
+
+    function changeCurrentTranslateY(params: number) {
+        setCurrentTranslate(params || 0);
+    }
 
     function onAddRequest(data: TCol) {
         setRequested(prev => [...prev, data])
@@ -48,7 +51,7 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
     }
 
     function addInput(data: Omit<Field, "Icon">) {
-        setInputs(prev => ([...prev, { ...generateDataForInput(data), id: uuidv4() }]))
+        setInputs(prev => ([...prev, { ...generateDataForInput(data), id: data.id }]))
     }
 
     function fillFormDataBase(data: Omit<TFormDataBase, "formData" | "requested">, parsed: any) {
@@ -96,6 +99,8 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
             activeInputID,
             formDataBase,
             requested,
+            currentTranslate,
+            changeCurrentTranslateY,
             onAddRequest,
             onChangeRequsted,
             fillFormDataBase,

@@ -7,6 +7,8 @@ export type TDesignerContext = {
     activeInputID: string | null,
     formDataBase: Omit<TFormDataBase, "formData" | "requested"> | null,
     requested: TCol[],
+    currentTranslate: string,
+    changeCurrentTranslateY: (param: number) => void,
     onAddRequest: (data: TCol) => void,
     fillFormDataBase: (data: Omit<TFormDataBase, "formData" | "requested">, parsed: any) => void,
     onChangeRequsted: (data: TCol[]) => void,
