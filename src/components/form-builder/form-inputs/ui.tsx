@@ -1,21 +1,22 @@
 'use client';
 
-import { useRef, ReactNode, Fragment, createElement } from "react";
+import { useRef, ReactNode, Fragment, createElement, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import type { Identifier, XYCoord } from 'dnd-core'
+import { getEmptyImage } from "react-dnd-html5-backend";
 import { Editor } from "primereact/editor";
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
 
 import { useDesigner } from '@/contexts';
 
-import type { Identifier, XYCoord } from 'dnd-core'
 import type { InputInstance } from "./types";
 import { ETInput, ItemTypes, TInputsFields } from "../types";
 
 const inputInctance: InputInstance = {
     Container({ children, id, index }: { children: ReactNode; id: string, index: number }) {
         const ref = useRef<HTMLDivElement>(null)
-        const { shuffleInputs } = useDesigner();
+        const { shuffleInputs, currentTranslate, changeCurrentTranslateY } = useDesigner();
 
         const [{ handlerId }, drop] = useDrop<
             { id: string; index: number },
@@ -27,12 +28,22 @@ const inputInctance: InputInstance = {
                         handlerId: monitor.getHandlerId(),
                     }
                 },
+                drop(item) {
+                    changeCurrentTranslateY(0);
+                },
                 hover(item, monitor) {
                     if (!ref.current) {
                         return
                     }
                     const dragIndex = item.index
                     const hoverIndex = index
+
+                    const delta = monitor.getDifferenceFromInitialOffset() as {
+                        x: number
+                        y: number
+                    }
+
+                    changeCurrentTranslateY(Math.round(delta.y));
 
                     // Don't replace items with themselves
                     if (dragIndex === hoverIndex) {
@@ -50,7 +61,7 @@ const inputInctance: InputInstance = {
                     const clientOffset = monitor.getClientOffset()
 
                     // Get pixels to the top
-                    const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
+                    const hoverClientY = ((clientOffset as XYCoord).y + Math.round(delta.y / 2)) - hoverBoundingRect.top
 
                     // Only perform the move when the mouse has crossed half of the items height
                     // When dragging downwards, only move when the cursor is below 50%
@@ -66,6 +77,8 @@ const inputInctance: InputInstance = {
                         return
                     }
 
+                    changeCurrentTranslateY(0);
+
                     // Time to actually perform the action
                     shuffleInputs(dragIndex, hoverIndex)
 
@@ -75,29 +88,33 @@ const inputInctance: InputInstance = {
                     // to avoid expensive index searches.
                     item.index = hoverIndex
                 },
-            });
+            }, [shuffleInputs, changeCurrentTranslateY]);
 
-        const [{ isDragging }, drag] = useDrag({
+        const [{ isDragging }, drag, preview] = useDrag({
             type: ItemTypes.CARD,
             item: () => ({ id, index }),
             collect: (monitor: any) => ({
                 isDragging: monitor.isDragging(),
             }),
-        })
+        }, [id, index])
+
+        useEffect(() => {
+            preview(getEmptyImage(), { captureDraggingState: true })
+        }, [])
 
         drag(drop(ref))
 
         return (
-            <div ref={ref} className={`${isDragging ? 'cursor-move opacity-0' : 'cursor-pointer'}`} data-handler-id={handlerId}>
+            <div style={{ transform: isDragging && `rotate(5deg) translate3d(0,${currentTranslate}px,0)` }} ref={ref} data-handler-id={handlerId} className={`${isDragging ? `cursor-move opacity-1 rotate-3 border-2 rounded-lg border-gray-500` : 'cursor-pointer'} transition-all`} >
                 {children}
             </div>
         )
     },
     FormInputs(props: TInputsFields) {
-        const { activeInputID, toggleActiveInputID } = useDesigner();
+        const { activeInputID, currentTranslate, toggleActiveInputID } = useDesigner();
         return (
             <inputInctance.Container id={props.id} index={props.index || 0}>
-                <div className={`p-4 relative border-2 ${props.id === activeInputID ? 'border-slate-400' : 'border-none'} rounded-lg bg-slate-800`} onClick={() => toggleActiveInputID(props.id)}>
+                <div className={`p-4 relative border-2 ${props.id === activeInputID ? 'border-slate-400' : 'border-none'} rounded-lg bg-slate-800 transition-all`} onClick={() => toggleActiveInputID(props.id)}>
                     {inputInctance.Components[props.componentsRender] &&
                         createElement(inputInctance.Components[props.componentsRender], props)}
                     <div className="absolute top-2 right-2 select-none pointer-events-none">

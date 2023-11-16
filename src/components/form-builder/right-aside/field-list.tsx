@@ -3,10 +3,11 @@
 import { useDrag } from "react-dnd";
 
 import { useDesigner } from "@/contexts";
-import { Field, ItemTypes, TInputInstance, TInputsFields } from "../types";
+import { Field, ItemTypes, TInputsFields } from "../types";
+import { v4 } from "uuid";
 
-export default function FieldList({ Icon, ...rest }: Field) {
-    const { addInput } = useDesigner();
+export default function FieldList({ Icon, ...rest }: Omit<Field, 'id'>) {
+    const { addInput, toggleActiveInputID } = useDesigner();
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: ItemTypes.BOX,
@@ -14,7 +15,9 @@ export default function FieldList({ Icon, ...rest }: Field) {
         end: (item, monitor) => {
             const dropResult = monitor.getDropResult<TInputsFields>()
             if (item && dropResult) {
-                addInput(rest);
+                const gIds = v4();
+                addInput({ ...rest, id: gIds });
+                toggleActiveInputID(gIds);
                 alert(`You dropped ${item.name} into Form builder!`)
             }
         },
