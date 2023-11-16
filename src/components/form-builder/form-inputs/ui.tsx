@@ -140,6 +140,11 @@ const inputInctance: InputInstance = {
                     <Editor name={name} value={editable ? value : ""} onTextChange={(e) => onChange(e as any, name)} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
                 </Fragment>
             )
+        },
+        [ETInput.dropdown]: () => {
+            return (
+                <div>Dropdown</div>
+            )
         }
     }
 }

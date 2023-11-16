@@ -35,6 +35,16 @@ export const listInpts: TListOfFileds = [{
             type: "checkbox",
             label: "Checkbox",
             fieldName: "Checkbox field",
+        },
+        {
+            Icon: ToggleRight,
+            name: "",
+            value: "",
+            required: false,
+            componentsRender: ETInput.dropdown,
+            type: "dropdown",
+            label: "Dropdown",
+            fieldName: "Dropdown field",
         }
     ]
 },

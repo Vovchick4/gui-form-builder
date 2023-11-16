@@ -48,7 +48,8 @@ export type TCheckBox = {
 export enum ETInput {
     default = "default",
     checkbox = "checkbox",
-    markdown = "markdown"
+    markdown = "markdown",
+    dropdown = "dropdown"
 }
 
 export type Field = { Icon: Icon } & Omit<TInputsFields, "id" | "index">

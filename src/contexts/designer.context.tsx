@@ -20,6 +20,7 @@ function generateDataForInput(data: Omit<Field, "Icon">): Omit<TInputsFields, "i
         [ETInput.checkbox]: { checked: data.checked || false },
         [ETInput.default]: { placeholder: data.placeholder || "" },
         [ETInput.markdown]: {},
+        [ETInput.dropdown]: {}
     }
 
     if (!addedData[data.componentsRender]) {
@@ -58,6 +59,7 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
 
     function clearInputs() {
         setInputs([]);
+        setRequested([]);
         setFormDataBase(null);
     }
 
