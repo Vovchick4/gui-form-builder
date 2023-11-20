@@ -12,6 +12,8 @@ import { useDesigner } from '@/contexts';
 
 import type { InputInstance } from "./types";
 import { ETInput, ItemTypes, TInputsFields } from "../types";
+import { Dropdown } from "primereact/dropdown";
+import { headerTemplates } from "@/components/editor-settings/ui";
 
 const inputInctance: InputInstance = {
     Container({ children, id, index }: { children: ReactNode; id: string, index: number }) {
@@ -141,26 +143,31 @@ const inputInctance: InputInstance = {
                 />
             </Fragment>)
         },
-        [ETInput.checkbox]: ({ label, checked, required }) => {
+        [ETInput.checkbox]: ({ name, label, value, checked, editable, required, onChange = (e, key) => { } }) => {
             return (
                 <Fragment>
                     <p className="text-white text-sm mb-2">{required && "*"}</p>
-                    <Checkbox size={4} checked={checked || false} />
-                    <label className="text-white ml-2 text-sm">{label}</label>
+                    <label className={`flex gap-2 items-center ${editable ? "" : "select-none pointer-events-none"}`}>
+                        <Checkbox size={4} checked={!!value || false} required={required} onChange={(e) => onChange(e as any, name)} />
+                        <label className="text-white ml-2 text-sm">{label}</label>
+                    </label>
                 </Fragment>
             )
         },
-        [ETInput.markdown]: ({ name, value, label, required, placeholder, editable = false, onChange = (e, key) => { } }) => {
+        [ETInput.markdown]: ({ name, value, label, required, placeholder, editable = false, settings, onChange = (e, key) => { } }) => {
             return (
                 <Fragment>
                     <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
-                    <Editor name={name} value={editable ? value : ""} onTextChange={(e) => onChange(e as any, name)} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
+                    <Editor name={name} value={editable ? value : ""} headerTemplate={settings && Object.keys(settings).map((key) => (createElement(headerTemplates[key], settings[key])))} onTextChange={(e) => onChange(e as any, name)} className={`${editable ? '' : 'select-none pointer-events-none'}`} placeholder={placeholder} />
                 </Fragment>
             )
         },
-        [ETInput.dropdown]: () => {
+        [ETInput.dropdown]: ({ name, label, value, options = [], placeholder = "", editable = false, required, onChange = (e, key) => { } }) => {
             return (
-                <div>Dropdown</div>
+                <div>
+                    <p className="text-white text-sm mb-2">{label}{required && "*"}</p>
+                    <Dropdown className={`w-full ${editable ? "" : "select-none pointer-events-none"}`} options={options} value={value} defaultValue={value} required={required} placeholder={!placeholder ? "Provide options!" : placeholder} onChange={(e) => onChange(e as any, name)} />
+                </div>
             )
         }
     }

@@ -18,6 +18,8 @@ export default function EditFormId() {
     const { addInput, fillFormDataBase, clearInputs } = useDesigner();
     const { data, isLoading } = useSWR<TFormDataBase>(formId, getFormById);
 
+    console.log(data);
+
     useEffect(() => {
         if (!data || !data.formData) return;
 

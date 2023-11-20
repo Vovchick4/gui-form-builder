@@ -17,8 +17,8 @@ function generateDataForInput(data: Omit<Field, "Icon">): Omit<TInputsFields, "i
     const addedData: IComponets<object> = {
         [ETInput.checkbox]: { checked: data.checked || false },
         [ETInput.default]: { placeholder: data.placeholder || "" },
-        [ETInput.markdown]: {},
-        [ETInput.dropdown]: {}
+        [ETInput.markdown]: { settings: { font: { name: "font", isVisible: data?.settings?.font.isVisible, data: data?.settings?.font.data || [] } } },
+        [ETInput.dropdown]: { options: data.options || [], placeholder: data.placeholder || "" }
     }
 
     if (!addedData[data.componentsRender]) {
@@ -34,6 +34,10 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
     const [activeInputID, setActiveInputID] = useState<string | null>(null);
     const [formDataBase, setFormDataBase] = useState<Omit<TFormDataBase, "formData" | "requested" | "table_columns"> | null>(null)
     const [currentTranslate, setCurrentTranslate] = useState<number>(0)
+
+    function fillFieldInput(id: string, key: string, data: any) {
+        setInputs(prev => prev.map(pr => id === pr.id ? { ...pr, [key]: data } : pr))
+    }
 
     function changeCurrentTranslateY(params: number) {
         setCurrentTranslate(params || 0);
@@ -105,6 +109,7 @@ export const DesignerProvider = ({ children }: { children: ReactNode }) => {
             changeCurrentTranslateY,
             onAddRequest,
             onChangeRequsted,
+            fillFieldInput,
             fillFormDataBase,
             onRemoveRequsted,
             toggleActiveInputID,

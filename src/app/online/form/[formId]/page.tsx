@@ -12,18 +12,19 @@ import { FormInputs } from "@/components";
 import { updateForm } from "@/components/form-builder/right-aside/actions";
 import { TFormDataBase, TInputsFields } from "@/components/form-builder/types";
 import displayErrorMessage from "@/lib/errorMessage";
+import { DropdownChangeEvent } from "primereact/dropdown";
 
 export default function OnlienForm() {
     const { formId } = useParams();
     const editorToastRef: any = useRef(null);
     const { data } = useSWR<TFormDataBase>(formId, getFormById);
     const { trigger, isMutating } = useSWRMutation<any, any, any, any>(`/api/form/request/${data?.id}`, updateForm);
-    const [requested, setRequested] = useState<{ name: string; value: string }[]>([]);
+    const [requested, setRequested] = useState<{ name: string; value: string | boolean, checked: boolean }[]>([]);
 
     useEffect(() => {
         if (data) {
             const formData = JSON.parse(data.formData) as TInputsFields[];
-            const initialRequested = formData.map(current => ({ name: current.name, value: '' }));
+            const initialRequested = formData.map(current => ({ name: current.name, value: current.value || "", checked: current.checked || false }));
             setRequested(initialRequested);
         }
     }, [data]);
@@ -33,11 +34,11 @@ export default function OnlienForm() {
     }
     const formData = (JSON.parse(data.formData) as TInputsFields[])
 
-    function onChange(e: EditorTextChangeEvent & React.ChangeEvent<HTMLInputElement>, key?: string) {
+    function onChange(e: EditorTextChangeEvent & React.ChangeEvent<HTMLInputElement> & DropdownChangeEvent, key?: string) {
         if (!key) {
-            setRequested(prev => prev.map(pr => pr.name === e.target.name ? { ...pr, value: e.target.value } : pr))
+            setRequested(prev => prev.map(pr => pr.name === e.target.name ? { ...pr, value: e.target.value || (e as any).value } : pr))
         } else {
-            setRequested(prev => prev.map(pr => pr.name === key ? { ...pr, value: e.htmlValue || "" } : pr))
+            setRequested(prev => prev.map(pr => pr.name === key ? { ...pr, value: e.htmlValue || (e as any).checked || e.value || "" } : pr))
         }
     }
 

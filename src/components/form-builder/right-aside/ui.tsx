@@ -30,7 +30,7 @@ export default function RightAside({ mode = rightAsideMode.create }: { mode?: ri
     }, [inputs, activeInputID])
 
     return (
-        <div className="p-2 flex flex-col justify-between rounded-lg bg-slate-950 select-none">
+        <div className="sticky top-0 p-2 flex flex-col justify-between rounded-lg bg-slate-950 select-none">
             {activeInputID ? (
                 <EditFormInputs {...input} />
             ) : (

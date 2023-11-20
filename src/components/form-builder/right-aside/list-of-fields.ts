@@ -1,7 +1,7 @@
-import { Type, Eye, AlignCenter, ToggleRight } from "react-feather";
+import { Type, Eye, AlignCenter, ToggleRight, List} from "react-feather";
 import { ETInput, TListOfFileds } from "../types";
 
-export const field_types = ["String", "Text", "Checkbox", "TextEditor"]
+export const field_types = ["String", "Text", "Switcher", "TextEditor"]
 
 export const listInpts: TListOfFileds = [{
     category: "Default fields",
@@ -37,7 +37,7 @@ export const listInpts: TListOfFileds = [{
             fieldName: "Checkbox field",
         },
         {
-            Icon: ToggleRight,
+            Icon: List,
             name: "",
             value: "",
             required: false,

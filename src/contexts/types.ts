@@ -1,6 +1,5 @@
 import { ChangeEvent } from "react";
 import { Field, TCol, TFormDataBase, TInputsFields } from "@/components/form-builder/types";
-import { ColumnEvent } from "primereact/column";
 
 export type TDesignerContext = {
     inputs: TInputsFields[],
@@ -10,6 +9,7 @@ export type TDesignerContext = {
     currentTranslate: number,
     changeCurrentTranslateY: (param: number) => void,
     onAddRequest: (data: TCol) => void,
+    fillFieldInput: (id: string, key: string, data: any) => void,
     fillFormDataBase: (data: Omit<TFormDataBase, "formData" | "requested">, parsed: any) => void,
     onChangeRequsted: (data: TCol[]) => void,
     onRemoveRequsted: (ids: string[]) => void,

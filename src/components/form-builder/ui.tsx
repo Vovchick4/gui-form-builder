@@ -36,7 +36,7 @@ export default function FormBuilderUI() {
 
     return (
         <div ref={drop} data-testid="formBuilder" className={`p-2 relative rounded-lg ${classes}`}>
-            <TabView>
+            <TabView className="sticky top-8 z-20">
                 <TabPanel header="Inputs" leftIcon="pi pi-database mr-2">
                     <ul className="flex flex-col gap-4 relative z-20">
                         {inputs && inputs.map((input, i) => (

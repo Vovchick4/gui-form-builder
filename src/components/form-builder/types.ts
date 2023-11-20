@@ -35,7 +35,7 @@ export type TCol = {
     relation_field: string
 }
 
-export type TInputsFields = TInputInstance & TTextField & TCheckBox
+export type TInputsFields = TInputInstance & TTextField & TCheckBox & TDropDown & TMarkSettings
 
 export type TTextField = {
     placeholder?: string;
@@ -44,6 +44,21 @@ export type TTextField = {
 export type TCheckBox = {
     checked?: boolean;
 }
+
+export type TDropDown = {
+    options?: string[]
+}
+
+export type TMarkSettings = {
+    settings?: {
+        [key: string]: any,
+        font: {
+            name: "font",
+            isVisible: boolean,
+            data: string[]
+        }
+    }
+} 
 
 export enum ETInput {
     default = "default",
